@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from methods import Token, Restricted
+import jwt
 
 app = Flask(__name__)
 login = Token()
@@ -19,6 +20,9 @@ def url_root():
 def url_health():
     return "OK"
 
+# Generates a JWT token
+def generate_token(username):
+    return jwt.encode({"username": username}, "secret", algorithm="HS256").decode("utf-8")
 
 # e.g. http://127.0.0.1:8000/login
 @app.route("/login", methods=['POST'])
