@@ -1,10 +1,14 @@
-import { protectFunction } from '../services/protected';
+import { protectFunction } from "../services/protected";
 
 export const protect = (req, res, next) => {
   let authorization = req.headers.authorization;
-  let response = {
-    "data": protectFunction(authorization)
-  };
-  res.send(response);
-  next();
-}
+  try {
+    let response = {
+      data: protectFunction(authorization.split(" ")[1]),
+    };
+    res.send(response);
+    next();
+  } catch (e) {
+    return res.status(403).send();
+  }
+};
